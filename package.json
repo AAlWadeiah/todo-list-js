@@ -1,0 +1,24 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "Todo List project for the JavaScript Course of TOP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AAlWadeiah/todo-list-js.git"
+  },
+  "author": "Abdullah A",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AAlWadeiah/todo-list-js/issues"
+  },
+  "homepage": "https://github.com/AAlWadeiah/todo-list-js#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.0",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
