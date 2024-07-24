@@ -1,1 +1,3 @@
-console.log("hello from index.js");
+import { toDate, format } from "date-fns";
+
+console.log(format(Date.now(), "PP"));
