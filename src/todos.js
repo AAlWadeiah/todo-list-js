@@ -17,6 +17,12 @@ class Priority {
   }
 }
 
+function priorityToString(p) {
+  if (p === Priority.LOW) return "Low";
+  if (p === Priority.MEDIUM) return "Medium";
+  if (p === Priority.HIGH) return "High";
+}
+
 function isPriorityLvl(priority) {
   return priority instanceof Priority;
 }
@@ -25,9 +31,15 @@ function isWithin24Hrs(time) {
   return time > minutesToMilliseconds(1) && time < minutesToMilliseconds(1440);
 }
 
-function toPriorityLvl(priority) {
-  if (typeof priority !== "number" || typeof priority !== "string") return;
+function isNumber(val) {
+  return typeof val !== "number";
+}
 
+function isString(val) {
+  return typeof val !== "string";
+}
+
+function toPriorityLvl(priority) {
   if (
     priority === 0 ||
     priority.toLowerCase() === "low" ||
@@ -68,7 +80,7 @@ function createTodo(
   const getDescription = () => description;
   const getDueDate = () => dueDate;
   const getDueTime = () => dueTime;
-  const getPriority = () => priority;
+  const getPriority = () => priorityToString(priority);
   const getNotes = () => notes;
   const getTags = () => tags;
   const getComplete = () => complete;
@@ -90,6 +102,8 @@ function createTodo(
   const setPriority = (priorityLvl) => {
     // Only accept valid priority levels
     if (isPriorityLvl(priorityLvl)) priority = priorityLvl;
+    else if (isNumber(priorityLvl) || isString(priorityLvl))
+      priority = toPriorityLvl(priorityLvl);
   };
   const setNotes = (newNotes) => (notes = newNotes);
   const addTag = (tag) => {
