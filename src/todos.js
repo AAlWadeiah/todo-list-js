@@ -56,7 +56,7 @@ function toPriorityLvl(priority) {
 function createTodo(
   title,
   description,
-  dueDate = Date.now(),
+  dueDate = null,
   dueTime = null,
   priority = Priority.MEDIUM,
   notes = ""
@@ -79,6 +79,7 @@ function createTodo(
     // Do not accept dates that are in the past
     if (isFuture(newDueDate)) dueDate = newDueDate;
   };
+  const clearDueDate = () => (dueDate = null);
   const setDueTime = (newTimeInMs) => {
     // Check if time is within between 1 minute and 24 hours
     if (isWithin24Hrs(newTimeInMs)) {
@@ -113,6 +114,7 @@ function createTodo(
     setTitle,
     setDescription,
     setDueDate,
+    clearDueDate,
     setDueTime,
     clearDueTime,
     setPriority,
