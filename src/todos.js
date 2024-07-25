@@ -17,6 +17,40 @@ class Priority {
   }
 }
 
+function isPriorityLvl(priority) {
+  return priority instanceof Priority;
+}
+
+function isWithin24Hrs(time) {
+  return time > minutesToMilliseconds(1) && time < minutesToMilliseconds(1440);
+}
+
+function toPriorityLvl(priority) {
+  if (typeof priority !== "number" || typeof priority !== "string") return;
+
+  if (
+    priority === 0 ||
+    priority.toLowerCase() === "low" ||
+    priority.toLowerCase() === "lo"
+  ) {
+    return Priority.LOW;
+  }
+  if (
+    priority === 1 ||
+    priority.toLowerCase() === "medium" ||
+    priority.toLowerCase() === "med"
+  ) {
+    return Priority.MEDIUM;
+  }
+  if (
+    priority === 2 ||
+    priority.toLowerCase() === "high" ||
+    priority.toLowerCase() === "hi"
+  ) {
+    return Priority.HIGH;
+  }
+}
+
 // Todo factory function
 // Due date and time are stored as milliseconds
 function createTodo(
@@ -28,6 +62,8 @@ function createTodo(
   notes = ""
 ) {
   let tags = [];
+  let complete = false;
+
   const getTitle = () => title;
   const getDescription = () => description;
   const getDueDate = () => dueDate;
@@ -35,6 +71,7 @@ function createTodo(
   const getPriority = () => priority;
   const getNotes = () => notes;
   const getTags = () => tags;
+  const getComplete = () => complete;
 
   const setTitle = (newTitle) => (title = newTitle);
   const setDescription = (newDesc) => (description = newDesc);
@@ -43,17 +80,15 @@ function createTodo(
     if (isFuture(newDueDate)) dueDate = newDueDate;
   };
   const setDueTime = (newTimeInMs) => {
-    if (
-      newTimeInMs > minutesToMilliseconds(1) &&
-      newTimeInMs < minutesToMilliseconds(1440)
-    ) {
+    // Check if time is within between 1 minute and 24 hours
+    if (isWithin24Hrs(newTimeInMs)) {
       dueTime = newTimeInMs;
     }
   };
   const clearDueTime = () => (dueTime = null);
   const setPriority = (priorityLvl) => {
     // Only accept valid priority levels
-    if (priorityLvl instanceof Priority) priority = priorityLvl;
+    if (isPriorityLvl(priorityLvl)) priority = priorityLvl;
   };
   const setNotes = (newNotes) => (notes = newNotes);
   const addTag = (tag) => {
@@ -64,6 +99,7 @@ function createTodo(
     let index = tags.indexOf(tag);
     if (index) tags.splice(index, 1);
   };
+  const setToComplete = () => (complete = true);
 
   return {
     getTitle,
@@ -73,6 +109,7 @@ function createTodo(
     getPriority,
     getNotes,
     getTags,
+    getComplete,
     setTitle,
     setDescription,
     setDueDate,
@@ -82,5 +119,8 @@ function createTodo(
     setNotes,
     addTag,
     removeTag,
+    setToComplete,
   };
 }
+
+export { createTodo };
