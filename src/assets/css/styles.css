@@ -1,0 +1,31 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+* {
+    border: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    --white-smoke: #f7f4f3ff;
+    --alabaster: #E7E7DA;
+}
+
+body {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr 4fr;
+    grid-template-areas: 
+    "nav main";
+}
+
+nav {
+    background-color: var(--alabaster);
+    grid-area: nav;
+}
+
+main {
+    background-color: var(--white-smoke);
+    grid-area: main;
+}
