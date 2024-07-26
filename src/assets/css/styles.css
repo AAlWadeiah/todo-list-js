@@ -10,6 +10,9 @@
     font-family: Arial, sans-serif;
     --white-smoke: #f7f4f3ff;
     --alabaster: #E7E7DA;
+    --ui-grey: #525252;
+    --hover-color: #DFDFCE;
+    --main-cta-color: #D64550
 }
 
 body {
@@ -23,9 +26,33 @@ body {
 nav {
     background-color: var(--alabaster);
     grid-area: nav;
+    padding: 1rem 0rem 0rem 1rem;
+}
+
+#app-title {
+    margin-bottom: 3rem;
 }
 
 main {
     background-color: var(--white-smoke);
     grid-area: main;
+}
+
+#project-list-header {
+    color: var(--ui-grey);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.project-item {
+    margin-bottom: 0.5rem;
+}
+
+.project-item:hover {
+    background-color: var(--hover-color);
+    color: var(--main-cta-color);
+}
+
+.project-item > *:first-child {
+    padding: 0.5rem;
 }
