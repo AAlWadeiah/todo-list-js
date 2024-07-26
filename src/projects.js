@@ -1,5 +1,10 @@
+import { v4 as uuidv4 } from "uuid";
+
 function createProject(name) {
   let todoList = [];
+  const ID = uuidv4();
+
+  const getID = () => ID;
   const getProjectName = () => name;
   const getTodoList = () => todoList;
 
@@ -14,6 +19,7 @@ function createProject(name) {
   return {
     getProjectName,
     getTodoList,
+    getID,
     addTodo,
     removeTodo,
   };

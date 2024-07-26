@@ -1,4 +1,5 @@
 import { isFuture, minutesToMilliseconds } from "date-fns";
+import { v4 as uuidv4 } from "uuid";
 
 // Priority levels enum
 class Priority {
@@ -75,6 +76,7 @@ function createTodo(
 ) {
   let tags = [];
   let complete = false;
+  const ID = uuidv4();
 
   const getTitle = () => title;
   const getDescription = () => description;
@@ -84,6 +86,7 @@ function createTodo(
   const getNotes = () => notes;
   const getTags = () => tags;
   const getComplete = () => complete;
+  const getID = () => ID;
 
   const setTitle = (newTitle) => (title = newTitle);
   const setDescription = (newDesc) => (description = newDesc);
@@ -125,6 +128,7 @@ function createTodo(
     getNotes,
     getTags,
     getComplete,
+    getID,
     setTitle,
     setDescription,
     setDueDate,
