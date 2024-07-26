@@ -8,11 +8,13 @@
     border: 0;
     margin: 0;
     font-family: Arial, sans-serif;
-    --white-smoke: #f7f4f3ff;
+    --white-smoke: #f5f5f5;
     --alabaster: #E7E7DA;
-    --ui-grey: #525252;
+    --ui-grey: #525252c9;
     --hover-color: #DFDFCE;
-    --main-cta-color: #D64550
+    --main-cta-color: #D64550;
+    --separator-line-color: #D6D6D6;
+    
 }
 
 body {
@@ -33,11 +35,6 @@ nav {
     margin-bottom: 3rem;
 }
 
-main {
-    background-color: var(--white-smoke);
-    grid-area: main;
-}
-
 #project-list-header {
     color: var(--ui-grey);
     font-weight: 500;
@@ -54,8 +51,28 @@ main {
     color: var(--main-cta-color);
 }
 
+main {
+    padding: 2rem;
+    background-color: var(--white-smoke);
+    grid-area: main;
+    display: flex;
+    justify-content: center;
+}
+
+#project-details{
+    width: min(70ch, 50vw);
+}
+
+#project-details > h1:first-child {
+    margin-bottom: 1rem;
+}
+
 .todo-item {
-    border-bottom: var(--ui-grey) 1px solid;
+    padding: 4px 0px;
+    border-bottom: var(--separator-line-color) 1px solid;
+    display: grid;
+    grid-template-columns: auto;
+    gap: 4px;
 }
 
 .todo-deadline {
