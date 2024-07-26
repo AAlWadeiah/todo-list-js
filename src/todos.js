@@ -1,4 +1,4 @@
-import { isFuture, minutesToMilliseconds } from "date-fns";
+import { isFuture, minutesToMilliseconds, format, getUnixTime } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 
 // Priority levels enum
@@ -28,8 +28,9 @@ function isPriorityLvl(priority) {
   return priority instanceof Priority;
 }
 
-function isWithin24Hrs(time) {
-  return time > minutesToMilliseconds(1) && time < minutesToMilliseconds(1440);
+function isWithin24Hrs(hrs, min) {
+  let timeInMin = hrs * 60 + min; // convert all to minutes
+  return timeInMin > 1 && timeInMin < 1440;
 }
 
 function isNumber(val) {
@@ -65,7 +66,6 @@ function toPriorityLvl(priority) {
 }
 
 // Todo factory function
-// Due date and time are stored as milliseconds
 function createTodo(
   title,
   description,
@@ -81,7 +81,9 @@ function createTodo(
   const getTitle = () => title;
   const getDescription = () => description;
   const getDueDate = () => dueDate;
+  const getSemanticDueDate = () => format(dueDate, "PP");
   const getDueTime = () => dueTime;
+  const getSemanticDueTime = () => format(dueTime, "p");
   const getPriority = () => priorityToString(priority);
   const getNotes = () => notes;
   const getTags = () => tags;
@@ -95,10 +97,10 @@ function createTodo(
     if (isFuture(newDueDate)) dueDate = newDueDate;
   };
   const clearDueDate = () => (dueDate = null);
-  const setDueTime = (newTimeInMs) => {
-    // Check if time is within between 1 minute and 24 hours
-    if (isWithin24Hrs(newTimeInMs)) {
-      dueTime = newTimeInMs;
+  const setDueTime = (hours, min) => {
+    if (isWithin24Hrs(hours, min)) {
+      let newTime = new Date().setHours(hours, min);
+      dueTime = newTime;
     }
   };
   const clearDueTime = () => (dueTime = null);
@@ -123,7 +125,9 @@ function createTodo(
     getTitle,
     getDescription,
     getDueDate,
+    getSemanticDueDate,
     getDueTime,
+    getSemanticDueTime,
     getPriority,
     getNotes,
     getTags,

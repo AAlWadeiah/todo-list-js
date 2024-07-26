@@ -1,6 +1,7 @@
-import { updateProjectList } from "./appView";
+import { updateProjectList, updateProjectDetails } from "./appView";
 import { createTodo } from "./todos";
 import { createProject } from "./projects";
+import { startOfToday, format } from "date-fns";
 
 const projListContainer = document.querySelector("#project-list");
 const projDetailsContainer = document.querySelector("#project-details");
@@ -20,9 +21,12 @@ function createDefaultProject() {
   defaultProject.addTodo(
     createTodo(
       "Get familiar with the app",
-      "Explore the app and see what it has to offer, start adding todos"
+      "Explore the app and see what it has to offer, start adding todos",
+      startOfToday()
     )
   );
+
+  defaultProject.getTodoList()[0].setDueTime(14, 15);
 
   projectList.push(defaultProject);
 }
@@ -33,6 +37,7 @@ export const screenController = (function (
 ) {
   createDefaultProject();
   updateProjectList(projectListContainer, projectList);
+  updateProjectDetails(projectDetailsContainer, projectList[0]);
 
   projectListContainer.addEventListener("click", projectClickHandler);
 

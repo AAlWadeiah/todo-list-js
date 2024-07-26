@@ -46,6 +46,7 @@ main {
 
 .project-item {
     margin-bottom: 0.5rem;
+    padding: 0.7rem;
 }
 
 .project-item:hover {
@@ -53,6 +54,11 @@ main {
     color: var(--main-cta-color);
 }
 
-.project-item > *:first-child {
-    padding: 0.5rem;
+.todo-item {
+    border-bottom: var(--ui-grey) 1px solid;
+}
+
+.todo-deadline {
+    display: flex;
+    gap: 8px;
 }
