@@ -87,10 +87,14 @@ button {
     border-radius: 10px;
 }
 
-.tertiary-cta-btn.active {
+.tertiary-cta-btn {
     color: var(--main-cta-color);
     background: none;
     margin: 0.5rem 0rem;
+}
+
+.tertiary-cta-btn.hidden {
+    display: none;
 }
 
 .tertiary-cta-btn:hover {
@@ -99,18 +103,17 @@ button {
 
 .secondary-cta-btn {
     background-color: var(--ui-grey);
+    font-weight: 600;
+    color: var(--white-smoke);
 }
 
 .main-cta-btn {
     background-color: var(--main-cta-color);
+    font-weight: 600;
+    color: var(--white-smoke);
 }
 
-.hidden {
-    max-height: 0;
-    visibility: hidden;
-}
-
-.form-container.active {
+.form-container {
     padding: 0.5rem 0.5rem;
     margin: 0.5rem 0rem;
     border: 1px solid var(--separator-line-color);

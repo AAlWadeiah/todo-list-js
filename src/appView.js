@@ -45,7 +45,6 @@ export function drawAddTodo(container) {
   const addTodoBtn = document.createElement("button");
   addTodoBtn.id = "add-todo-btn";
   addTodoBtn.classList.toggle("tertiary-cta-btn");
-  addTodoBtn.classList.toggle("active");
   addTodoBtn.textContent = "+ Add a todo";
   container.appendChild(addTodoBtn);
 }
@@ -53,7 +52,6 @@ export function drawAddTodo(container) {
 export function drawTodoForm(container) {
   const formContainer = document.createElement("div");
   formContainer.classList.toggle("form-container");
-  formContainer.classList.toggle("active");
 
   const form = document.createElement("form");
   form.action = "";
@@ -71,13 +69,23 @@ export function drawTodoForm(container) {
   cancelBtn.classList.toggle("secondary-cta-btn");
   cancelBtn.textContent = "Cancel";
   cancelBtn.value = "cancel";
+  cancelBtn.id = "todo-cancel-btn";
 
   const addTodoBtn = document.createElement("button");
   addTodoBtn.classList.toggle("main-cta-btn");
   addTodoBtn.textContent = "Add todo";
   addTodoBtn.type = "submit";
+  addTodoBtn.id = "todo-add-btn";
 
   form.append(titleInput, cancelBtn, addTodoBtn);
   formContainer.appendChild(form);
   container.appendChild(formContainer);
+}
+
+export function hideElement(el) {
+  el.classList.add("hidden");
+}
+
+export function showElement(el) {
+  el.classList.remove("hidden");
 }

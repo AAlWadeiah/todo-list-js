@@ -3,24 +3,39 @@ import {
   updateProjectDetails,
   drawAddTodo,
   drawTodoForm,
+  hideElement,
+  showElement,
 } from "./appView";
 import { createTodo } from "./todos";
 import { createProject } from "./projects";
 import { startOfToday, format } from "date-fns";
 
-const projListContainer = document.querySelector("#project-list");
-const projDetailsContainer = document.querySelector("#project-details");
 let projectList = [];
 
 function projectClickHandler(e) {
   console.log(e.target.dataset.id);
 }
 
+function setupTodoForm(container, addTodoBtn) {
+  drawTodoForm(container);
+  const todoForm = document.querySelector("#todo-form");
+  const formContainer = document.querySelector(
+    ".form-container:has(#todo-form)"
+  );
+  const cancelBtn = document.querySelector("#todo-cancel-btn");
+
+  cancelBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    showElement(addTodoBtn);
+    formContainer.remove();
+  });
+}
+
 function projectDetailsClickHandler(e) {
   switch (e.target.id) {
     case "add-todo-btn":
-      e.target.classList.toggle("hidden");
-      drawTodoForm(e.target.closest("#project-details"));
+      hideElement(e.target);
+      setupTodoForm(e.target.closest("#project-details"), e.target);
     default:
       break;
   }
@@ -42,10 +57,10 @@ function createDefaultProject() {
   projectList.push(defaultProject);
 }
 
-export const screenController = (function (
-  projectListContainer,
-  projectDetailsContainer
-) {
+export const screenController = (function () {
+  const projectListContainer = document.querySelector("#project-list");
+  const projectDetailsContainer = document.querySelector("#project-details");
+
   createDefaultProject();
   updateProjectList(projectListContainer, projectList);
   updateProjectDetails(projectDetailsContainer, projectList[0]);
@@ -54,8 +69,7 @@ export const screenController = (function (
   projectListContainer.addEventListener("click", projectClickHandler);
 
   projectDetailsContainer.addEventListener("click", projectDetailsClickHandler);
-})(projListContainer, projDetailsContainer);
+})();
 
 // TODO: need to add event listner for Todo form.
 //      Configure behavior when submit button is clicked: create new Todo, hide form, update todo list and show "Add a todo" button
-//      Behavior when cancel button is clicked: hide form and show same todo list and "Add a todo" button
