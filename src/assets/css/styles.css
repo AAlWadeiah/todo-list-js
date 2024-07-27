@@ -124,3 +124,32 @@ button {
 .select-placeholder {
     color: var(--placeholder-color);
 }
+
+#todo-form{
+    display: grid;
+    gap: 8px 8px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    grid-template-areas: 
+    "title title title title"
+    "desc desc desc desc"
+    "due-date due-time priority ."
+    "cancel add . ."
+    ;
+}
+
+#todo-form > input,
+#todo-form > select {
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#todo-form > input:focus,
+#todo-form > select:focus {
+    outline: 1px solid var(--main-cta-color);
+}
+
+
+/* #todo-form > input:nth-child(n+3){
+    margin-top: 20px;
+} */

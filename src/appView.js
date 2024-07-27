@@ -66,24 +66,30 @@ export function drawTodoForm(container) {
   titleInput.id = "todo-title";
   titleInput.placeholder = "Title";
   titleInput.required = true;
+  titleInput.focus();
+  titleInput.style.gridArea = "title";
 
   const descInput = document.createElement("input");
   descInput.type = "text";
   descInput.name = "todo-desc";
   descInput.id = "todo-desc";
   descInput.placeholder = "Description";
+  descInput.style.gridArea = "desc";
 
   const dueDate = document.createElement("input");
   dueDate.type = "date";
   dueDate.id = "todo-due-date";
+  dueDate.style.gridArea = "due-date";
 
   const dueTime = document.createElement("input");
   dueTime.type = "time";
   dueTime.id = "todo-due-time";
+  dueTime.style.gridArea = "due-time";
 
   let priorityArr = ["Low", "Medium", "High"];
   const prioritySelect = document.createElement("select");
   prioritySelect.id = "todo-priority";
+  prioritySelect.style.gridArea = "priority";
 
   const selectPlaceholder = document.createElement("option");
   selectPlaceholder.classList.toggle("select-placeholder");
@@ -106,12 +112,14 @@ export function drawTodoForm(container) {
   cancelBtn.textContent = "Cancel";
   cancelBtn.value = "cancel";
   cancelBtn.id = "todo-cancel-btn";
+  cancelBtn.style.gridArea = "cancel";
 
   const addTodoBtn = document.createElement("button");
   addTodoBtn.classList.toggle("main-cta-btn");
   addTodoBtn.textContent = "Add todo";
   addTodoBtn.type = "submit";
   addTodoBtn.id = "todo-add-btn";
+  addTodoBtn.style.gridArea = "add";
 
   form.append(
     titleInput,
