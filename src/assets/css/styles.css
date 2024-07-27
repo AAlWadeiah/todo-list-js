@@ -14,7 +14,7 @@
     --hover-color: #DFDFCE;
     --main-cta-color: #D64550;
     --separator-line-color: #D6D6D6;
-    
+    --main-section-hover-color: #EBEBEB
 }
 
 body {
@@ -78,4 +78,41 @@ main {
 .todo-deadline {
     display: flex;
     gap: 8px;
+}
+
+button {
+    border: none;
+    outline: none;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+}
+
+.tertiary-cta-btn.active {
+    color: var(--main-cta-color);
+    background: none;
+    margin: 0.5rem 0rem;
+}
+
+.tertiary-cta-btn:hover {
+    background-color: var(--main-section-hover-color);
+}
+
+.secondary-cta-btn {
+    background-color: var(--ui-grey);
+}
+
+.main-cta-btn {
+    background-color: var(--main-cta-color);
+}
+
+.hidden {
+    max-height: 0;
+    visibility: hidden;
+}
+
+.form-container.active {
+    padding: 0.5rem 0.5rem;
+    margin: 0.5rem 0rem;
+    border: 1px solid var(--separator-line-color);
+    border-radius: 10px;
 }
