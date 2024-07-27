@@ -14,7 +14,8 @@
     --hover-color: #DFDFCE;
     --main-cta-color: #D64550;
     --separator-line-color: #D6D6D6;
-    --main-section-hover-color: #EBEBEB
+    --main-section-hover-color: #EBEBEB;
+    --placeholder-color: #757575
 }
 
 body {
@@ -118,4 +119,8 @@ button {
     margin: 0.5rem 0rem;
     border: 1px solid var(--separator-line-color);
     border-radius: 10px;
+}
+
+.select-placeholder {
+    color: var(--placeholder-color);
 }

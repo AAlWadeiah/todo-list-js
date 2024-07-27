@@ -1,3 +1,5 @@
+import { se } from "date-fns/locale";
+
 export function updateProjectList(container, projects) {
   for (let proj of projects) {
     const pDiv = document.createElement("div");
@@ -65,6 +67,40 @@ export function drawTodoForm(container) {
   titleInput.placeholder = "Title";
   titleInput.required = true;
 
+  const descInput = document.createElement("input");
+  descInput.type = "text";
+  descInput.name = "todo-desc";
+  descInput.id = "todo-desc";
+  descInput.placeholder = "Description";
+
+  const dueDate = document.createElement("input");
+  dueDate.type = "date";
+  dueDate.id = "todo-due-date";
+
+  const dueTime = document.createElement("input");
+  dueTime.type = "time";
+  dueTime.id = "todo-due-time";
+
+  let priorityArr = ["Low", "Medium", "High"];
+  const prioritySelect = document.createElement("select");
+  prioritySelect.id = "todo-priority";
+
+  const selectPlaceholder = document.createElement("option");
+  selectPlaceholder.classList.toggle("select-placeholder");
+  selectPlaceholder.textContent = "Priority";
+  selectPlaceholder.value = "";
+  selectPlaceholder.disabled = true;
+  selectPlaceholder.selected = true;
+  selectPlaceholder.hidden = true;
+  prioritySelect.appendChild(selectPlaceholder);
+
+  for (let p of priorityArr) {
+    const option = document.createElement("option");
+    option.value = p;
+    option.textContent = p;
+    prioritySelect.appendChild(option);
+  }
+
   const cancelBtn = document.createElement("button");
   cancelBtn.classList.toggle("secondary-cta-btn");
   cancelBtn.textContent = "Cancel";
@@ -77,7 +113,15 @@ export function drawTodoForm(container) {
   addTodoBtn.type = "submit";
   addTodoBtn.id = "todo-add-btn";
 
-  form.append(titleInput, cancelBtn, addTodoBtn);
+  form.append(
+    titleInput,
+    descInput,
+    dueDate,
+    dueTime,
+    prioritySelect,
+    cancelBtn,
+    addTodoBtn
+  );
   formContainer.appendChild(form);
   container.appendChild(formContainer);
 }

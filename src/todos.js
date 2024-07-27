@@ -68,11 +68,11 @@ function toPriorityLvl(priority) {
 // Todo factory function
 function createTodo(
   title,
-  description,
+  description = null,
   dueDate = null,
   dueTime = null,
-  priority = Priority.MEDIUM,
-  notes = ""
+  priority = null,
+  notes = null
 ) {
   let tags = [];
   let complete = false;
