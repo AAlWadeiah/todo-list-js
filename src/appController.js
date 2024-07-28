@@ -45,9 +45,11 @@ function setupTodoForm(container, addTodoBtn) {
         title.value,
         desc.value,
         dueDate.value,
-        dueTime.value,
         priority.value
       );
+
+      let [hrs, mins] = dueTime.value.split(":");
+      todo.setDueTime(hrs, mins);
 
       project.addTodo(todo);
     } catch (error) {
