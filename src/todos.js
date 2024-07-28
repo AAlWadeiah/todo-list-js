@@ -29,7 +29,7 @@ function isPriorityLvl(priority) {
 }
 
 function isWithin24Hrs(hrs, min) {
-  let timeInMin = hrs * 60 + min; // convert all to minutes
+  let timeInMin = +hrs * 60 + +min; // convert all to minutes
   return timeInMin > 1 && timeInMin < 1440;
 }
 
