@@ -8,7 +8,7 @@ import {
 } from "./appView";
 import { createTodo } from "./todos";
 import { createProject } from "./projects";
-import { startOfToday, format } from "date-fns";
+import moment from "moment";
 
 let projectList = [];
 
@@ -80,11 +80,15 @@ function projectDetailsClickHandler(e) {
 function createDefaultProject() {
   let defaultProject = createProject("Home");
 
+  let date = moment().date();
+  let month = moment().month(); // jan=0, dec=11
+  let year = moment().year();
+
   defaultProject.addTodo(
     createTodo(
       "Get familiar with the app",
       "Explore the app and see what it has to offer, start adding todos",
-      startOfToday()
+      `${year}-${month}-${date}`
     )
   );
 

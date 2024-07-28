@@ -1,4 +1,4 @@
-import { isFuture, minutesToMilliseconds, format, getUnixTime } from "date-fns";
+import { isFuture, format } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 
 // Priority levels enum
@@ -81,7 +81,6 @@ function createTodo(
   const getTitle = () => title;
   const getDescription = () => description;
   const getDueDate = () => dueDate;
-  const getSemanticDueDate = () => format(dueDate, "PP");
   const getDueTime = () => dueTime;
   const getSemanticDueTime = () => format(dueTime, "p");
   const getPriority = () => priorityToString(priority);
@@ -125,7 +124,6 @@ function createTodo(
     getTitle,
     getDescription,
     getDueDate,
-    getSemanticDueDate,
     getDueTime,
     getSemanticDueTime,
     getPriority,

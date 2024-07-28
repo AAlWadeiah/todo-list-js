@@ -1,4 +1,5 @@
 import { se } from "date-fns/locale";
+import moment from "moment";
 
 export function updateProjectList(container, projects) {
   for (let proj of projects) {
@@ -31,7 +32,8 @@ export function updateProjectDetails(container, project) {
     dueDiv.classList.toggle("todo-deadline");
     if (todo.getDueDate()) {
       const dueDate = document.createElement("span");
-      dueDate.textContent = todo.getSemanticDueDate();
+      let formatted = moment(todo.getDueDate()).format("D MMM YYYY");
+      dueDate.textContent = formatted;
       dueDiv.appendChild(dueDate);
     }
     if (todo.getDueTime()) {
