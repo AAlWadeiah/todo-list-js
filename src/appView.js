@@ -13,6 +13,8 @@ export function updateProjectList(container, projects) {
 }
 
 export function updateProjectDetails(container, project) {
+  container.innerHTML = "";
+  container.dataset.projID = project.getID();
   const projName = document.createElement("h1");
   projName.textContent = project.getProjectName();
   container.appendChild(projName);

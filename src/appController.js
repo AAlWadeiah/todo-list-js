@@ -12,6 +12,12 @@ import { startOfToday, format } from "date-fns";
 
 let projectList = [];
 
+function findProjectByID(projId) {
+  for (let p of projectList) {
+    if (p.getID() == projId) return p;
+  }
+}
+
 function projectClickHandler(e) {
   console.log(e.target.dataset.id);
 }
@@ -23,6 +29,34 @@ function setupTodoForm(container, addTodoBtn) {
     ".form-container:has(#todo-form)"
   );
   const cancelBtn = document.querySelector("#todo-cancel-btn");
+
+  todoForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const title = document.querySelector("#todo-title");
+    const desc = document.querySelector("#todo-desc");
+    const dueDate = document.querySelector("#todo-due-date");
+    const dueTime = document.querySelector("#todo-due-time");
+    const priority = document.querySelector("#todo-priority");
+    let project = findProjectByID(container.dataset.projID);
+
+    try {
+      let todo = createTodo(
+        title.value,
+        desc.value,
+        dueDate.value,
+        dueTime.value,
+        priority.value
+      );
+
+      project.addTodo(todo);
+    } catch (error) {
+      console.error(error);
+    }
+    updateProjectDetails(container, project);
+    drawAddTodo(container);
+    formContainer.remove();
+  });
 
   cancelBtn.addEventListener("click", (e) => {
     e.preventDefault();
