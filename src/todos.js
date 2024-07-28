@@ -1,5 +1,6 @@
 import { isFuture, format } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 // Priority levels enum
 class Priority {
@@ -95,6 +96,7 @@ function createTodo(
     // Do not accept dates that are in the past
     if (isFuture(newDueDate)) dueDate = newDueDate;
   };
+  const getFormattedDueDate = () => moment(dueDate).format("D MMM YYYY");
   const clearDueDate = () => (dueDate = null);
   const setDueTime = (hours, min) => {
     if (isWithin24Hrs(hours, min)) {
@@ -124,6 +126,7 @@ function createTodo(
     getTitle,
     getDescription,
     getDueDate,
+    getFormattedDueDate,
     getDueTime,
     getSemanticDueTime,
     getPriority,
