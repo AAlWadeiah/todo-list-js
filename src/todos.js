@@ -107,8 +107,7 @@ function createTodo(
   const clearDueDate = () => (dueDate = null);
   const setDueTime = (hours, min) => {
     if (isWithin24Hrs(hours, min)) {
-      let newTime = new Date().setHours(hours, min);
-      dueTime = newTime;
+      dueTime = new Date().setHours(hours, min);
     }
   };
   const clearDueTime = () => (dueTime = null);

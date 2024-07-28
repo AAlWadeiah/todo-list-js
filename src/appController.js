@@ -41,15 +41,16 @@ function setupTodoForm(container, addTodoBtn) {
     let project = findProjectByID(container.dataset.projID);
 
     try {
-      let todo = createTodo(
-        title.value,
-        desc.value,
-        dueDate.value,
-        priority.value
-      );
+      let todo = createTodo(title.value, desc.value, dueDate.value);
 
-      let [hrs, mins] = dueTime.value.split(":");
-      todo.setDueTime(hrs, mins);
+      if (dueTime.value) {
+        let [hrs, mins] = dueTime.value.split(":");
+        todo.setDueTime(hrs, mins);
+      }
+
+      if (priority.value) {
+        todo.setPriority(priority.value);
+      }
 
       project.addTodo(todo);
     } catch (error) {
