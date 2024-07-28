@@ -66,6 +66,13 @@ function toPriorityLvl(priority) {
   }
 }
 
+function getPriorityColorClass(priority) {
+  let pLvl = toPriorityLvl(priority);
+  if (pLvl === Priority.LOW) return "low-priority";
+  if (pLvl === Priority.MEDIUM) return "medium-priority";
+  if (pLvl === Priority.HIGH) return "high-priority";
+}
+
 // Todo factory function
 function createTodo(
   title,
@@ -148,4 +155,4 @@ function createTodo(
   };
 }
 
-export { createTodo };
+export { createTodo, getPriorityColorClass };

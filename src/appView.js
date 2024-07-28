@@ -1,3 +1,5 @@
+import { getPriorityColorClass } from "./todos";
+
 export function updateProjectList(container, projects) {
   for (let proj of projects) {
     const pDiv = document.createElement("div");
@@ -25,21 +27,36 @@ export function updateProjectDetails(container, project) {
     const todoTitle = document.createElement("p");
     todoTitle.textContent = todo.getTitle();
 
-    let dueDiv = document.createElement("div");
-    dueDiv.classList.toggle("todo-deadline");
+    const todoDesc = document.createElement("p");
+    todoDesc.textContent = todo.getDescription();
+    todoDesc.classList.toggle("subtext");
+
+    const bottomDiv = document.createElement("div");
+    bottomDiv.classList.toggle("todo-bottom");
+    bottomDiv.classList.toggle("subtext");
+
     if (todo.getDueDate()) {
       const dueDate = document.createElement("span");
 
       dueDate.textContent = todo.getFormattedDueDate();
-      dueDiv.appendChild(dueDate);
+      bottomDiv.appendChild(dueDate);
     }
     if (todo.getDueTime()) {
       const dueTime = document.createElement("span");
       dueTime.textContent = todo.getSemanticDueTime();
-      dueDiv.appendChild(dueTime);
+      bottomDiv.appendChild(dueTime);
     }
 
-    todoDiv.append(todoTitle, dueDiv);
+    if (todo.getPriority()) {
+      const priorityFlag = document.createElement("span");
+      priorityFlag.classList.toggle("material-icons");
+      priorityFlag.textContent = "flag";
+      priorityFlag.classList.toggle(getPriorityColorClass(todo.getPriority()));
+
+      bottomDiv.appendChild(priorityFlag);
+    }
+
+    todoDiv.append(todoTitle, todoDesc, bottomDiv);
     container.appendChild(todoDiv);
   }
 }

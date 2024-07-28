@@ -93,6 +93,7 @@ function createDefaultProject() {
   );
 
   defaultProject.getTodoList()[0].setDueTime(14, 15);
+  defaultProject.getTodoList()[0].setPriority("medium");
 
   projectList.push(defaultProject);
 }

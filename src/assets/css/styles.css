@@ -15,7 +15,10 @@
     --main-cta-color: #D64550;
     --separator-line-color: #D6D6D6;
     --main-section-hover-color: #EBEBEB;
-    --placeholder-color: #757575
+    --placeholder-color: #757575;
+    --high-priority-color: red;
+    --medium-priority-color: orange;
+    --low-priority-color: blue;
 }
 
 body {
@@ -76,9 +79,28 @@ main {
     gap: 4px;
 }
 
-.todo-deadline {
+.todo-bottom {
     display: flex;
+    align-items: center;
     gap: 8px;
+}
+
+.subtext {
+    font-size: 14px;
+    color: var(--ui-grey);
+}
+
+.high-priority {
+    color: var(--high-priority-color);
+}
+
+.medium-priority {
+    /* fill: var(--medium-priority-color); */
+    color: var(--medium-priority-color);
+}
+
+.low-priority {
+    color: var(--low-priority-color);
 }
 
 button {
@@ -148,8 +170,3 @@ button {
 #todo-form > select:focus {
     outline: 1px solid var(--main-cta-color);
 }
-
-
-/* #todo-form > input:nth-child(n+3){
-    margin-top: 20px;
-} */

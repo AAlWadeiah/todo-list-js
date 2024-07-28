@@ -1,4 +1,5 @@
 import "./assets/css/styles.css";
-import { screenController } from "./appController";
+import "./appController";
+import "material-icons/iconfont/material-icons.css";
 
 // TODO: Create module that interacts with UI. Create displayHandler/screenHandler to handle interaction between logic and UI modules
