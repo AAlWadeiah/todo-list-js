@@ -71,9 +71,16 @@ main {
     margin-bottom: 1rem;
 }
 
+.todo-container {
+    display: grid;
+    grid-template-columns: min-content auto;
+    border-bottom: var(--separator-line-color) 1px solid;
+    gap: 8px;
+    align-content: start;
+}
+
 .todo-item {
     padding: 4px 0px;
-    border-bottom: var(--separator-line-color) 1px solid;
     display: grid;
     grid-template-columns: auto;
     gap: 4px;
@@ -95,12 +102,37 @@ main {
 }
 
 .medium-priority {
-    /* fill: var(--medium-priority-color); */
     color: var(--medium-priority-color);
 }
 
 .low-priority {
     color: var(--low-priority-color);
+}
+
+.check-circle {
+    margin-top: 5px;
+    display: grid;
+    place-content: center;
+    color: var(--separator-line-color);
+    font: inherit;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 50%;
+}
+
+.check-circle:hover {
+    color: var(--ui-grey);
+    cursor: pointer;
+}
+
+.check-circle:active {
+    color: green;
+}
+
+.check-circle:active::before {
+    content: "\2714";
+    font-size: 12px;
 }
 
 button {

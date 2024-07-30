@@ -1,5 +1,9 @@
 import { getPriorityColorClass } from "./todos";
 
+function clearContainer(container) {
+  container.innerHTML = "";
+}
+
 export function updateProjectList(container, projects) {
   for (let proj of projects) {
     const pDiv = document.createElement("div");
@@ -13,16 +17,25 @@ export function updateProjectList(container, projects) {
 }
 
 export function updateProjectDetails(container, project) {
-  container.innerHTML = "";
+  clearContainer(container);
   container.dataset.projID = project.getID();
   const projName = document.createElement("h1");
   projName.textContent = project.getProjectName();
   container.appendChild(projName);
 
   for (let todo of project.getTodoList()) {
-    const todoDiv = document.createElement("div");
-    todoDiv.dataset.id = todo.getID();
-    todoDiv.classList.toggle("todo-item");
+    if (todo.getComplete()) continue;
+
+    const todoContainer = document.createElement("div");
+    todoContainer.dataset.id = todo.getID();
+    todoContainer.classList.toggle("todo-container");
+
+    const circleForComplete = document.createElement("span");
+    circleForComplete.classList.toggle("check-circle");
+    todoContainer.appendChild(circleForComplete);
+
+    const todoContent = document.createElement("div");
+    todoContent.classList.toggle("todo-item");
 
     const todoTitle = document.createElement("p");
     todoTitle.textContent = todo.getTitle();
@@ -56,8 +69,9 @@ export function updateProjectDetails(container, project) {
       bottomDiv.appendChild(priorityFlag);
     }
 
-    todoDiv.append(todoTitle, todoDesc, bottomDiv);
-    container.appendChild(todoDiv);
+    todoContent.append(todoTitle, todoDesc, bottomDiv);
+    todoContainer.appendChild(todoContent);
+    container.appendChild(todoContainer);
   }
 }
 

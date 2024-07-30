@@ -18,6 +18,12 @@ function findProjectByID(projId) {
   }
 }
 
+function findTodoByID(projectObj, todoID) {
+  for (let t of projectObj.getTodoList()) {
+    if (t.getID() === todoID) return t;
+  }
+}
+
 function projectClickHandler(e) {
   console.log(e.target.dataset.id);
 }
@@ -69,12 +75,17 @@ function setupTodoForm(container, addTodoBtn) {
 }
 
 function projectDetailsClickHandler(e) {
-  switch (e.target.id) {
-    case "add-todo-btn":
-      hideElement(e.target);
-      setupTodoForm(e.target.closest("#project-details"), e.target);
-    default:
-      break;
+  const projectEl = e.target.closest("#project-details");
+  if (e.target.id === "add-todo-btn") {
+    hideElement(e.target);
+    setupTodoForm(projectEl, e.target);
+  } else if (e.target.classList.contains("check-circle")) {
+    const projectObj = findProjectByID(projectEl.dataset.projID);
+    const todoElID = e.target.closest(".todo-container").dataset.id;
+    const todoObj = findTodoByID(projectObj, todoElID);
+    todoObj.setToComplete();
+    updateProjectDetails(projectEl, projectObj);
+    drawAddTodo(projectEl);
   }
 }
 
@@ -113,5 +124,9 @@ export const screenController = (function () {
   projectDetailsContainer.addEventListener("click", projectDetailsClickHandler);
 })();
 
-// TODO: need to add event listner for Todo form.
-//      Configure behavior when submit button is clicked: create new Todo, hide form, update todo list and show "Add a todo" button
+// TODO:
+// Add UI and event liseners for editing todo. Todo should be updated
+// Add UI and event listeners for adding a new project. New project should be added to nav
+// Add event listener for loading details of project as user clicks on it on nav
+// Add UI to allow user to edit name of project on the details page. Event listener should update nav and project details
+// Add logic to write data to localStorage
