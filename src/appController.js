@@ -5,6 +5,8 @@ import {
   drawTodoForm,
   hideElement,
   showElement,
+  generateTitleInput,
+  isVisible,
 } from "./appView";
 import { createTodo } from "./todos";
 import { createProject } from "./projects";
@@ -74,6 +76,51 @@ function setupTodoForm(container, addTodoBtn) {
   });
 }
 
+function exitEditOnClickOutside(element, event) {
+  // source: https://stackoverflow.com/a/3028037
+
+  const outsideClickListener = () => {
+    if (!element.contains(event.target) && isVisible(element)) {
+      console.log(element);
+      console.log(event.target);
+      // removeClickListener();
+      // revertFromEditUI();
+      // console.log(`Clicked outside of ${element}`);
+    }
+  };
+
+  const revertFromEditUI = () => {
+    const projectEl = element.closest("#project-details");
+    const projectObj = findProjectByID(projectEl.dataset.projID);
+    updateProjectDetails(projectEl, projectObj);
+    drawAddTodo(projectEl);
+    element.remove();
+  };
+
+  const removeClickListener = () => {
+    document.removeEventListener("click", outsideClickListener);
+  };
+
+  document.addEventListener("click", outsideClickListener);
+}
+
+function fieldToInput(field) {
+  // Refactor drawTodoForm function in appView so that there is a separate function to draw each input field
+  // Based on the class of field, draw the correct input and put the content of the field inside the input
+  // Draw a save and a cancel button
+  if (field.classList.contains("todo-title")) {
+    const input = generateTitleInput();
+    field.parentNode.replaceChild(input, field);
+    input.value = field.innerText;
+    document.addEventListener("click", (e) => {
+      exitEditOnClickOutside(input, e);
+    });
+  } else if (field.classList.contains("todo-desc")) {
+    // Implement
+  }
+  // else if (field.classList.contains(""))
+}
+
 function projectDetailsClickHandler(e) {
   const projectEl = e.target.closest("#project-details");
   if (e.target.id === "add-todo-btn") {
@@ -86,6 +133,8 @@ function projectDetailsClickHandler(e) {
     todoObj.setToComplete();
     updateProjectDetails(projectEl, projectObj);
     drawAddTodo(projectEl);
+  } else if (e.target.classList.contains("todo-field")) {
+    fieldToInput(e.target);
   }
 }
 
