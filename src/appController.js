@@ -5,7 +5,6 @@ import {
   drawTodoForm,
   hideElement,
   showElement,
-  generateTitleInput,
 } from "./appView";
 import { createTodo } from "./todos";
 import { createProject } from "./projects";
@@ -24,13 +23,6 @@ function findTodoByID(projectObj, todoID) {
     if (t.getID() === todoID) return t;
   }
 }
-
-// DELETE IF NOT USED
-// function switchEditable(elem) {
-//   // if (elem.isContentEditable) {
-//   elem.contentEditable = elem.contentEditable === true ? false : true;
-//   // }
-// }
 
 function projectClickHandler(e) {
   console.log(e.target.dataset.id);
@@ -123,56 +115,6 @@ function editTodo(projContainer, projObj, todoEl, todoToEdit, editBtn) {
   });
 }
 
-// DELETE IF NOT USED
-// function exitEditOnClickOutside(element, event) {
-//   // source: https://stackoverflow.com/a/3028037
-
-//   const outsideClickListener = () => {
-//     if (!element.contains(event.target) && isVisible(element)) {
-//       // console.log(element);
-//       // console.log(event.target);
-//       switchEditable(element);
-//       // removeClickListener();
-//       // revertFromEditUI();
-//       console.log(`Clicked outside of ${element}`);
-//     }
-//   };
-
-//   const revertFromEditUI = () => {
-//     const projectEl = element.closest("#project-details");
-//     const projectObj = findProjectByID(projectEl.dataset.projID);
-//     updateProjectDetails(projectEl, projectObj);
-//     drawAddTodo(projectEl);
-//     element.remove();
-//   };
-
-//   const removeClickListener = () => {
-//     document.removeEventListener("click", outsideClickListener);
-//   };
-
-//   document.addEventListener("click", outsideClickListener);
-// }
-
-// DELETE IF NOT USED
-// function fieldToInput(field) {
-//   // Refactor drawTodoForm function in appView so that there is a separate function to draw each input field
-//   // Based on the class of field, draw the correct input and put the content of the field inside the input
-//   // Draw a save and a cancel button
-//   if (field.classList.contains("todo-title")) {
-//     // const input = generateTitleInput();
-//     // field.parentNode.replaceChild(input, field);
-//     // input.value = field.innerText;
-//     switchEditable(field);
-//     console.log(field);
-//     document.addEventListener("click", (e) => {
-//       exitEditOnClickOutside(field, e);
-//     });
-//   // } else if (field.classList.contains("todo-desc")) {
-//   //   // Implement
-//   // }
-//   // else if (field.classList.contains(""))
-// }
-
 function projectDetailsClickHandler(e) {
   const projectEl = e.target.closest("#project-details");
   if (e.target.id === "add-todo-btn") {
@@ -230,7 +172,6 @@ export const screenController = (function () {
 })();
 
 // TODO:
-// Add UI and event liseners for editing todo. Todo should be updated
 // Add UI and event listeners for adding a new project. New project should be added to nav
 // Add event listener for loading details of project as user clicks on it on nav
 // Add UI to allow user to edit name of project on the details page. Event listener should update nav and project details

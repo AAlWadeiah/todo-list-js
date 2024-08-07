@@ -6,15 +6,6 @@ function clearContainer(container) {
   container.innerHTML = "";
 }
 
-// DELETE IF NOT USED
-// export function isVisible(elem) {
-//   // source (2018-03-11): https://github.com/jquery/jquery/blob/master/src/css/hiddenVisibleSelectors.js
-//   return (
-//     !!elem &&
-//     !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length)
-//   );
-// }
-
 export function updateProjectList(container, projects) {
   for (let proj of projects) {
     const pDiv = document.createElement("div");
@@ -257,7 +248,6 @@ export function drawTodoForm(todoToEdit = null) {
   );
   formContainer.appendChild(form);
   return formContainer;
-  // container.appendChild(formContainer);
 }
 
 export function hideElement(el) {

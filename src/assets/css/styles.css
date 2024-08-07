@@ -76,7 +76,6 @@ main {
     padding-bottom: 4px;
     display: grid;
     grid-template-columns: min-content auto;
-    /* grid-auto-flow: column; */
     grid-auto-rows: min-content;
     border-bottom: var(--separator-line-color) 1px solid;
     gap: 8px;
@@ -105,32 +104,24 @@ main {
     padding: 4px 4px;
 }
 
-/* .todo-field:hover {
-    border-color: var(--separator-line-color);
-} */
-
 .todo-title {
 
 }
 
 .todo-desc {
-    /* grid-area: desc; */
-    /* font: inherit; */
+
 }
 
 .due-date{
-    /* grid-area: date; */
-    /* font: inherit; */
+
 }
 
 .due-time {
-    /* grid-area: time; */
-    /* font: inherit; */
+
 }
 
 .priority-flag {
-    /* grid-area: flag; */
-    /* font: inherit; */
+
 }
 
 .high-priority {
@@ -247,14 +238,3 @@ input.form-control:focus,
 select.form-control:focus {
     outline: 1px solid var(--main-cta-color);
 }
-
-/* #todo-form > input,
-#todo-form > select {
-    padding: 4px 8px;
-    border-radius: 10px;
-} */
-
-/* #todo-form > input:focus,
-#todo-form > select:focus {
-    outline: 1px solid var(--main-cta-color);
-} */
