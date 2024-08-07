@@ -89,6 +89,7 @@ function createTodo(
   const getTitle = () => title;
   const getDescription = () => description;
   const getDueDate = () => dueDate;
+  const getFormattedDueDate = () => moment(dueDate).format("D MMM YYYY");
   const getDueTime = () => dueTime;
   const getSemanticDueTime = () => format(dueTime, "p");
   const getPriority = () => priorityToString(priority);
@@ -97,13 +98,24 @@ function createTodo(
   const getComplete = () => complete;
   const getID = () => ID;
 
+  const getTodoDetails = () => {
+    return {
+      title: getTitle(),
+      description: description ? getDescription() : null,
+      dueDate: dueDate ? getDueDate() : null,
+      dueTime: dueTime ? getDueTime() : null,
+      priority: priority ? getPriority() : null,
+      id: getID(),
+      complete: getComplete(),
+    };
+  };
+
   const setTitle = (newTitle) => (title = newTitle);
   const setDescription = (newDesc) => (description = newDesc);
   const setDueDate = (newDueDate) => {
     // Do not accept dates that are in the past
     if (isFuture(newDueDate)) dueDate = newDueDate;
   };
-  const getFormattedDueDate = () => moment(dueDate).format("D MMM YYYY");
   const clearDueDate = () => (dueDate = null);
   const setDueTime = (hours, min) => {
     if (isWithin24Hrs(hours, min)) {
@@ -151,6 +163,7 @@ function createTodo(
     addTag,
     removeTag,
     setToComplete,
+    getTodoDetails,
   };
 }
 

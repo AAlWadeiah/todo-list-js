@@ -6,7 +6,6 @@ import {
   hideElement,
   showElement,
   generateTitleInput,
-  isVisible,
 } from "./appView";
 import { createTodo } from "./todos";
 import { createProject } from "./projects";
@@ -26,12 +25,19 @@ function findTodoByID(projectObj, todoID) {
   }
 }
 
+// DELETE IF NOT USED
+// function switchEditable(elem) {
+//   // if (elem.isContentEditable) {
+//   elem.contentEditable = elem.contentEditable === true ? false : true;
+//   // }
+// }
+
 function projectClickHandler(e) {
   console.log(e.target.dataset.id);
 }
 
 function setupTodoForm(container, addTodoBtn) {
-  drawTodoForm(container);
+  container.appendChild(drawTodoForm());
   const todoForm = document.querySelector("#todo-form");
   const formContainer = document.querySelector(
     ".form-container:has(#todo-form)"
@@ -76,50 +82,96 @@ function setupTodoForm(container, addTodoBtn) {
   });
 }
 
-function exitEditOnClickOutside(element, event) {
-  // source: https://stackoverflow.com/a/3028037
+function editTodo(projContainer, projObj, todoEl, todoToEdit, editBtn) {
+  const editForm = drawTodoForm(todoToEdit);
+  projContainer.replaceChild(editForm, todoEl);
+  const todoForm = editForm.querySelector("#todo-form");
+  const cancelBtn = document.querySelector("#todo-cancel-btn");
 
-  const outsideClickListener = () => {
-    if (!element.contains(event.target) && isVisible(element)) {
-      console.log(element);
-      console.log(event.target);
-      // removeClickListener();
-      // revertFromEditUI();
-      // console.log(`Clicked outside of ${element}`);
+  todoForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const title = document.querySelector("#todo-title");
+    const desc = document.querySelector("#todo-desc");
+    const dueDate = document.querySelector("#todo-due-date");
+    const dueTime = document.querySelector("#todo-due-time");
+    const priority = document.querySelector("#todo-priority");
+
+    try {
+      todoToEdit.setTitle(title.value);
+      todoToEdit.setDescription(desc.value);
+      todoToEdit.setDueDate(dueDate.value);
+
+      if (dueTime.value) {
+        let [hrs, mins] = dueTime.value.split(":");
+        todoToEdit.setDueTime(hrs, mins);
+      }
+
+      if (priority.value) {
+        todoToEdit.setPriority(priority.value);
+      }
+    } catch (error) {
+      console.error(error);
     }
-  };
+    updateProjectDetails(projContainer, projObj);
+    drawAddTodo(projContainer);
+  });
 
-  const revertFromEditUI = () => {
-    const projectEl = element.closest("#project-details");
-    const projectObj = findProjectByID(projectEl.dataset.projID);
-    updateProjectDetails(projectEl, projectObj);
-    drawAddTodo(projectEl);
-    element.remove();
-  };
-
-  const removeClickListener = () => {
-    document.removeEventListener("click", outsideClickListener);
-  };
-
-  document.addEventListener("click", outsideClickListener);
+  cancelBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    projContainer.replaceChild(todoEl, editForm);
+  });
 }
 
-function fieldToInput(field) {
-  // Refactor drawTodoForm function in appView so that there is a separate function to draw each input field
-  // Based on the class of field, draw the correct input and put the content of the field inside the input
-  // Draw a save and a cancel button
-  if (field.classList.contains("todo-title")) {
-    const input = generateTitleInput();
-    field.parentNode.replaceChild(input, field);
-    input.value = field.innerText;
-    document.addEventListener("click", (e) => {
-      exitEditOnClickOutside(input, e);
-    });
-  } else if (field.classList.contains("todo-desc")) {
-    // Implement
-  }
-  // else if (field.classList.contains(""))
-}
+// DELETE IF NOT USED
+// function exitEditOnClickOutside(element, event) {
+//   // source: https://stackoverflow.com/a/3028037
+
+//   const outsideClickListener = () => {
+//     if (!element.contains(event.target) && isVisible(element)) {
+//       // console.log(element);
+//       // console.log(event.target);
+//       switchEditable(element);
+//       // removeClickListener();
+//       // revertFromEditUI();
+//       console.log(`Clicked outside of ${element}`);
+//     }
+//   };
+
+//   const revertFromEditUI = () => {
+//     const projectEl = element.closest("#project-details");
+//     const projectObj = findProjectByID(projectEl.dataset.projID);
+//     updateProjectDetails(projectEl, projectObj);
+//     drawAddTodo(projectEl);
+//     element.remove();
+//   };
+
+//   const removeClickListener = () => {
+//     document.removeEventListener("click", outsideClickListener);
+//   };
+
+//   document.addEventListener("click", outsideClickListener);
+// }
+
+// DELETE IF NOT USED
+// function fieldToInput(field) {
+//   // Refactor drawTodoForm function in appView so that there is a separate function to draw each input field
+//   // Based on the class of field, draw the correct input and put the content of the field inside the input
+//   // Draw a save and a cancel button
+//   if (field.classList.contains("todo-title")) {
+//     // const input = generateTitleInput();
+//     // field.parentNode.replaceChild(input, field);
+//     // input.value = field.innerText;
+//     switchEditable(field);
+//     console.log(field);
+//     document.addEventListener("click", (e) => {
+//       exitEditOnClickOutside(field, e);
+//     });
+//   // } else if (field.classList.contains("todo-desc")) {
+//   //   // Implement
+//   // }
+//   // else if (field.classList.contains(""))
+// }
 
 function projectDetailsClickHandler(e) {
   const projectEl = e.target.closest("#project-details");
@@ -133,8 +185,12 @@ function projectDetailsClickHandler(e) {
     todoObj.setToComplete();
     updateProjectDetails(projectEl, projectObj);
     drawAddTodo(projectEl);
-  } else if (e.target.classList.contains("todo-field")) {
-    fieldToInput(e.target);
+  } else if (e.target.classList.contains("edit-btn")) {
+    const projectObj = findProjectByID(projectEl.dataset.projID);
+    const todoEl = e.target.closest(".todo-container");
+    const todoElID = todoEl.dataset.id;
+    const todoObj = findTodoByID(projectObj, todoElID);
+    editTodo(projectEl, projectObj, todoEl, todoObj, e.target);
   }
 }
 

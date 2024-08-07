@@ -237,7 +237,11 @@ export function drawTodoForm(todoToEdit = null) {
 
   const addTodoBtn = document.createElement("button");
   addTodoBtn.classList.toggle("main-cta-btn");
-  addTodoBtn.textContent = "Add todo";
+  if (todoToEdit) {
+    addTodoBtn.textContent = "Save";
+  } else {
+    addTodoBtn.textContent = "Add todo";
+  }
   addTodoBtn.type = "submit";
   addTodoBtn.id = "todo-add-btn";
   addTodoBtn.style.gridArea = "add";

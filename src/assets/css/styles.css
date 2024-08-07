@@ -76,24 +76,22 @@ main {
     padding-bottom: 4px;
     display: grid;
     grid-template-columns: min-content auto;
+    /* grid-auto-flow: column; */
+    grid-auto-rows: min-content;
     border-bottom: var(--separator-line-color) 1px solid;
     gap: 8px;
     align-content: start;
 }
 
 .todo-content {
-    /* padding: 4px 0px; */
     display: flex;
     flex-direction: column;
-    /* display: grid;
-    grid-template-columns: auto; */
-    /* gap: 4px; */
+    align-items: flex-start;
 }
 
 .todo-bottom {
     display: flex;
     align-items: center;
-    /* gap: 8px; */
 }
 
 .subtext {
@@ -107,9 +105,9 @@ main {
     padding: 4px 4px;
 }
 
-.todo-field:hover {
+/* .todo-field:hover {
     border-color: var(--separator-line-color);
-}
+} */
 
 .todo-title {
 
@@ -173,6 +171,11 @@ main {
     font-size: 12px;
 }
 
+.edit-btn {
+    font-size: 12px;
+    margin: -4px 0px 0px 0px;
+}
+
 button {
     border: none;
     outline: none;
@@ -181,6 +184,7 @@ button {
 }
 
 .tertiary-cta-btn {
+    cursor: pointer;
     color: var(--main-cta-color);
     background: none;
 }
