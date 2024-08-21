@@ -27,7 +27,6 @@ body {
     grid-template-columns: 1fr 4fr;
     grid-template-areas: 
     "nav main";
-    /* position: relative; */
 }
 
 nav {
@@ -49,6 +48,8 @@ nav {
 .project-item {
     margin-bottom: 0.5rem;
     padding: 0.7rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 .project-item:hover {
@@ -219,6 +220,7 @@ button {
     border-radius: 10px;
 }
 
+.edit-btn,
 .tertiary-cta-btn,
 .close-modal-btn {
     cursor: pointer;

@@ -6,12 +6,11 @@ function clearContainer(container) {
   container.innerHTML = "";
 }
 
-export function drawNewProjectModal() {
+export function drawNewProjectModal(nameVal = null) {
   const modal = document.createElement("dialog");
   modal.id = "new-project-modal";
   modal.classList.toggle("form-container");
   modal.classList.toggle("modal");
-  // container.appendChild(modal);
 
   const form = document.createElement("form");
   form.id = "new-project-form";
@@ -29,7 +28,7 @@ export function drawNewProjectModal() {
   closeBtn.type = "submit";
   closeBtn.value = "close";
   closeBtn.formNoValidate = true;
-  // closeBtn.classList.toggle("tertiary-cta-btn");
+
   closeBtn.classList.toggle("material-icons");
   closeBtn.classList.toggle("close-modal-btn");
   closeBtn.textContent = "close";
@@ -48,6 +47,10 @@ export function drawNewProjectModal() {
   projNameInput.placeholder = "Enter a name for the project";
   projNameInput.autofocus = true;
   projNameInput.classList.toggle("form-control");
+  if (nameVal) {
+    projNameInput.value = nameVal;
+    projNameInput.innerText = nameVal;
+  }
 
   const cancelBtn = document.createElement("button");
   cancelBtn.classList.toggle("secondary-cta-btn");
@@ -57,7 +60,7 @@ export function drawNewProjectModal() {
 
   const createProjBtn = document.createElement("button");
   createProjBtn.classList.toggle("main-cta-btn");
-  createProjBtn.textContent = "Create";
+  createProjBtn.textContent = nameVal ? "Save" : "Create";
   createProjBtn.type = "submit";
   createProjBtn.id = "project-create-btn";
 
@@ -76,6 +79,8 @@ export function updateProjectList(container, projects) {
     pDiv.classList.toggle("project-item");
     pDiv.textContent = proj.getProjectName();
 
+    drawEditTodo(pDiv);
+
     container.appendChild(pDiv);
   }
 
@@ -88,7 +93,6 @@ export function updateProjectList(container, projects) {
 
 function drawEditTodo(container) {
   const editTodoBtn = document.createElement("button");
-  editTodoBtn.classList.toggle("tertiary-cta-btn");
   editTodoBtn.classList.toggle("edit-btn");
   editTodoBtn.textContent = "Edit";
   container.appendChild(editTodoBtn);

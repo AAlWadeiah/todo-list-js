@@ -12,6 +12,8 @@ import { createProject } from "./projects";
 import moment from "moment";
 
 let projectList = [];
+const projectListContainer = document.querySelector("#project-list");
+const projectDetailsContainer = document.querySelector("#project-details");
 
 function findProjectByID(projId) {
   for (let p of projectList) {
@@ -27,54 +29,69 @@ function findTodoByID(projectObj, todoID) {
 
 function closeModal(modal) {
   modal.close();
-  document.body.removeChild(modal);
-  console.log("closed modal without submitting anything");
+  modal.remove();
 }
 
 function addProjectToProjectList(projName) {
   projectList.push(createProject(projName));
 }
 
+function isDisplayedInProjectDetails(projDetails, projObj) {
+  return projDetails.dataset.projID === projObj.getID();
+}
+
+function setupProjectModal(defaultProject = null) {
+  let projName;
+  if (defaultProject) projName = defaultProject.getProjectName();
+  const newProjModal = drawNewProjectModal(projName);
+  document.body.appendChild(newProjModal);
+  newProjModal.showModal();
+
+  const closeBtn = document.querySelector(
+    `#${newProjModal.id} .close-modal-btn`
+  );
+  const cancelBtn = document.querySelector(
+    `#${newProjModal.id} #project-cancel-btn`
+  );
+  const createBtn = document.querySelector(
+    `#${newProjModal.id} #project-create-btn`
+  );
+
+  closeBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeModal(newProjModal);
+  });
+
+  cancelBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeModal(newProjModal);
+  });
+
+  newProjModal.addEventListener("submit", (e) => {
+    const nameInput = document.querySelector("#project-name-input");
+
+    if (defaultProject) {
+      defaultProject.setName(nameInput.value);
+      if (isDisplayedInProjectDetails(projectDetailsContainer, defaultProject))
+        updateProjectDetails(projectDetailsContainer, defaultProject);
+    } else {
+      addProjectToProjectList(nameInput.value);
+    }
+    updateProjectList(projectListContainer, projectList);
+    closeModal(newProjModal);
+  });
+}
+
 function projectListClickHandler(e) {
-  const projectListContainer = document.querySelector("#project-list");
-  const projectDetailsContainer = document.querySelector("#project-details");
   let project = findProjectByID(e.target.dataset.id);
   if (e.target.id === "new-project-btn") {
-    // console.log(e.target.id);
-    const newProjModal = drawNewProjectModal();
-    document.body.appendChild(newProjModal);
-    newProjModal.showModal();
-    // console.log(newProjModal.id);
-    const closeBtn = document.querySelector(
-      `#${newProjModal.id} .close-modal-btn`
-    );
-    const cancelBtn = document.querySelector(
-      `#${newProjModal.id} #project-cancel-btn`
-    );
-    const createBtn = document.querySelector(
-      `#${newProjModal.id} #project-create-btn`
-    );
-
-    closeBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      closeModal(newProjModal);
-    });
-
-    cancelBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      closeModal(newProjModal);
-    });
-
-    newProjModal.addEventListener("submit", (e) => {
-      const nameInput = document.querySelector("#project-name-input");
-
-      addProjectToProjectList(nameInput.value);
-      updateProjectList(projectListContainer, projectList);
-    });
+    setupProjectModal();
   } else if (project) {
-    // console.log(project.getProjectName());
     updateProjectDetails(projectDetailsContainer, project);
     drawAddTodo(projectDetailsContainer);
+  } else if (e.target.classList.contains("edit-btn")) {
+    let project = findProjectByID(e.target.closest(".project-item").dataset.id);
+    setupProjectModal(project);
   }
 }
 

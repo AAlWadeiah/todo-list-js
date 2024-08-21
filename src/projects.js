@@ -16,12 +16,15 @@ function createProject(name) {
     if (index) todoList.splice(index, 1);
   };
 
+  const setName = (newName) => (name = newName);
+
   return {
     getProjectName,
     getTodoList,
     getID,
     addTodo,
     removeTodo,
+    setName,
   };
 }
 
