@@ -6,7 +6,69 @@ function clearContainer(container) {
   container.innerHTML = "";
 }
 
+export function drawNewProjectModal() {
+  const modal = document.createElement("dialog");
+  modal.id = "new-project-modal";
+  modal.classList.toggle("form-container");
+  modal.classList.toggle("modal");
+  // container.appendChild(modal);
+
+  const form = document.createElement("form");
+  form.id = "new-project-form";
+  form.method = "dialog";
+  modal.appendChild(form);
+
+  const modalTop = document.createElement("div");
+  modalTop.classList.toggle("modal-header");
+
+  const formTitle = document.createElement("p");
+  formTitle.textContent = "Create new project";
+  formTitle.classList.toggle("modal-title");
+
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "submit";
+  closeBtn.value = "close";
+  closeBtn.formNoValidate = true;
+  // closeBtn.classList.toggle("tertiary-cta-btn");
+  closeBtn.classList.toggle("material-icons");
+  closeBtn.classList.toggle("close-modal-btn");
+  closeBtn.textContent = "close";
+
+  modalTop.append(formTitle, closeBtn);
+  form.appendChild(modalTop);
+
+  const formInputs = document.createElement("div");
+  formInputs.classList.toggle("modal-content");
+
+  const projNameInput = document.createElement("input");
+  projNameInput.type = "text";
+  projNameInput.id = "project-name-input";
+  projNameInput.name = "project-name";
+  projNameInput.required = true;
+  projNameInput.placeholder = "Enter a name for the project";
+  projNameInput.autofocus = true;
+  projNameInput.classList.toggle("form-control");
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.classList.toggle("secondary-cta-btn");
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.value = "cancel";
+  cancelBtn.id = "project-cancel-btn";
+
+  const createProjBtn = document.createElement("button");
+  createProjBtn.classList.toggle("main-cta-btn");
+  createProjBtn.textContent = "Create";
+  createProjBtn.type = "submit";
+  createProjBtn.id = "project-create-btn";
+
+  formInputs.append(projNameInput, createProjBtn, cancelBtn);
+  form.appendChild(formInputs);
+  modal.appendChild(form);
+  return modal;
+}
+
 export function updateProjectList(container, projects) {
+  clearContainer(container);
   for (let proj of projects) {
     const pDiv = document.createElement("div");
 
@@ -16,6 +78,12 @@ export function updateProjectList(container, projects) {
 
     container.appendChild(pDiv);
   }
+
+  const newProjButton = document.createElement("button");
+  newProjButton.id = "new-project-btn";
+  newProjButton.textContent = "+ Create new project";
+  newProjButton.classList.toggle("nav-tertiary-btn");
+  container.appendChild(newProjButton);
 }
 
 function drawEditTodo(container) {
@@ -97,11 +165,11 @@ export function updateProjectDetails(container, project) {
 }
 
 export function drawAddTodo(container) {
-  const addTodoBtn = document.createElement("button");
-  addTodoBtn.id = "add-todo-btn";
-  addTodoBtn.classList.toggle("tertiary-cta-btn");
-  addTodoBtn.textContent = "+ Add a todo";
-  container.appendChild(addTodoBtn);
+  const createProjBtn = document.createElement("button");
+  createProjBtn.id = "add-todo-btn";
+  createProjBtn.classList.toggle("tertiary-cta-btn");
+  createProjBtn.textContent = "+ Add a todo";
+  container.appendChild(createProjBtn);
 }
 
 export function generateTitleInput(defVal = null) {
@@ -226,16 +294,16 @@ export function drawTodoForm(todoToEdit = null) {
   cancelBtn.id = "todo-cancel-btn";
   cancelBtn.style.gridArea = "cancel";
 
-  const addTodoBtn = document.createElement("button");
-  addTodoBtn.classList.toggle("main-cta-btn");
+  const createProjBtn = document.createElement("button");
+  createProjBtn.classList.toggle("main-cta-btn");
   if (todoToEdit) {
-    addTodoBtn.textContent = "Save";
+    createProjBtn.textContent = "Save";
   } else {
-    addTodoBtn.textContent = "Add todo";
+    createProjBtn.textContent = "Add todo";
   }
-  addTodoBtn.type = "submit";
-  addTodoBtn.id = "todo-add-btn";
-  addTodoBtn.style.gridArea = "add";
+  createProjBtn.type = "submit";
+  createProjBtn.id = "todo-add-btn";
+  createProjBtn.style.gridArea = "add";
 
   form.append(
     titleInput,
@@ -244,7 +312,7 @@ export function drawTodoForm(todoToEdit = null) {
     dueTime,
     prioritySelect,
     cancelBtn,
-    addTodoBtn
+    createProjBtn
   );
   formContainer.appendChild(form);
   return formContainer;

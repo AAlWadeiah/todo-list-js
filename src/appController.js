@@ -5,6 +5,7 @@ import {
   drawTodoForm,
   hideElement,
   showElement,
+  drawNewProjectModal,
 } from "./appView";
 import { createTodo } from "./todos";
 import { createProject } from "./projects";
@@ -24,8 +25,57 @@ function findTodoByID(projectObj, todoID) {
   }
 }
 
-function projectClickHandler(e) {
-  console.log(e.target.dataset.id);
+function closeModal(modal) {
+  modal.close();
+  document.body.removeChild(modal);
+  console.log("closed modal without submitting anything");
+}
+
+function addProjectToProjectList(projName) {
+  projectList.push(createProject(projName));
+}
+
+function projectListClickHandler(e) {
+  const projectListContainer = document.querySelector("#project-list");
+  const projectDetailsContainer = document.querySelector("#project-details");
+  let project = findProjectByID(e.target.dataset.id);
+  if (e.target.id === "new-project-btn") {
+    // console.log(e.target.id);
+    const newProjModal = drawNewProjectModal();
+    document.body.appendChild(newProjModal);
+    newProjModal.showModal();
+    // console.log(newProjModal.id);
+    const closeBtn = document.querySelector(
+      `#${newProjModal.id} .close-modal-btn`
+    );
+    const cancelBtn = document.querySelector(
+      `#${newProjModal.id} #project-cancel-btn`
+    );
+    const createBtn = document.querySelector(
+      `#${newProjModal.id} #project-create-btn`
+    );
+
+    closeBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeModal(newProjModal);
+    });
+
+    cancelBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeModal(newProjModal);
+    });
+
+    newProjModal.addEventListener("submit", (e) => {
+      const nameInput = document.querySelector("#project-name-input");
+
+      addProjectToProjectList(nameInput.value);
+      updateProjectList(projectListContainer, projectList);
+    });
+  } else if (project) {
+    // console.log(project.getProjectName());
+    updateProjectDetails(projectDetailsContainer, project);
+    drawAddTodo(projectDetailsContainer);
+  }
 }
 
 function setupTodoForm(container, addTodoBtn) {
@@ -166,13 +216,11 @@ export const screenController = (function () {
   updateProjectDetails(projectDetailsContainer, projectList[0]);
   drawAddTodo(projectDetailsContainer);
 
-  projectListContainer.addEventListener("click", projectClickHandler);
+  projectListContainer.addEventListener("click", projectListClickHandler);
 
   projectDetailsContainer.addEventListener("click", projectDetailsClickHandler);
 })();
 
 // TODO:
-// Add UI and event listeners for adding a new project. New project should be added to nav
-// Add event listener for loading details of project as user clicks on it on nav
 // Add UI to allow user to edit name of project on the details page. Event listener should update nav and project details
 // Add logic to write data to localStorage

@@ -27,6 +27,7 @@ body {
     grid-template-columns: 1fr 4fr;
     grid-template-areas: 
     "nav main";
+    /* position: relative; */
 }
 
 nav {
@@ -53,6 +54,50 @@ nav {
 .project-item:hover {
     background-color: var(--hover-color);
     color: var(--main-cta-color);
+}
+
+.nav-tertiary-btn {
+    cursor: pointer;
+    color: var(--main-cta-color);
+    background: none;
+}
+
+.nav-tertiary-btn.hidden {
+    display: none;
+}
+
+.nav-tertiary-btn:hover {
+    background-color: var(--hover-color);
+}
+
+.modal{
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    width: 40ch;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+ }
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+ 
+.modal-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px
 }
 
 main {
@@ -174,7 +219,8 @@ button {
     border-radius: 10px;
 }
 
-.tertiary-cta-btn {
+.tertiary-cta-btn,
+.close-modal-btn {
     cursor: pointer;
     color: var(--main-cta-color);
     background: none;
