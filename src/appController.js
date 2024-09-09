@@ -97,10 +97,6 @@ function getTodosOfProject(projID) {
   });
 }
 
-const compareArrays = (a, b) => {
-  return a.toString() === b.toString();
-};
-
 function findProjectByID(projId) {
   for (let p of projectList) {
     if (p.getID() == projId) return p;
@@ -108,7 +104,7 @@ function findProjectByID(projId) {
 }
 
 function findTodoByID(projectObj, todoID) {
-  for (let t of projectObj.getTodoList()) {
+  for (let t of getTodosOfProject(projectObj.getID())) {
     if (t.getID() === todoID) return t;
   }
 }
@@ -367,6 +363,3 @@ export const screenController = (function () {
 
   projectDetailsContainer.addEventListener("click", projectDetailsClickHandler);
 })();
-
-// TODO:
-// Add logic to write data to localStorage
