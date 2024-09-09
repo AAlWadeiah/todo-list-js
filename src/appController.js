@@ -12,8 +12,94 @@ import { createProject } from "./projects";
 import moment from "moment";
 
 let projectList = [];
+let todoList = [];
+
 const projectListContainer = document.querySelector("#project-list");
 const projectDetailsContainer = document.querySelector("#project-details");
+
+function storageAvailable(type) {
+  let storage;
+  try {
+    storage = window[type];
+    const x = "__storage_test__";
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  } catch (e) {
+    return (
+      e instanceof DOMException &&
+      e.name === "QuotaExceededError" &&
+      // acknowledge QuotaExceededError only if there's something already stored
+      storage &&
+      storage.length !== 0
+    );
+  }
+}
+
+function getFromLocalStorage(key, defaultValue = null) {
+  if (storageAvailable("localStorage")) {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
+  } else {
+    return null;
+  }
+}
+
+function setInLocalStorage(key, value) {
+  if (storageAvailable("localStorage")) {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function saveTodosToLocalStorage(todos) {
+  return setInLocalStorage("todos", JSON.stringify(todos));
+}
+
+function saveProjectsToLocalStorage(projects) {
+  return setInLocalStorage("projects", JSON.stringify(projects));
+}
+
+function getProjectsFromLocalStorage() {
+  let projectsData = JSON.parse(getFromLocalStorage("projects"));
+  // console.log(projectsData);
+  if (projectsData) {
+    // console.log(typeof projectsData);
+    return projectsData.map((proj) => createProject(proj.name, proj.ID));
+  }
+  return [];
+}
+
+function getTodosFromLocalStorage() {
+  const todosData = JSON.parse(getFromLocalStorage("todos"));
+  if (todosData) {
+    return todosData.map((todo) =>
+      createTodo(
+        todo.title,
+        todo.description,
+        todo.dueDate,
+        todo.dueTime,
+        todo.priority,
+        todo.assignedProject,
+        todo.complete,
+        todo.ID
+      )
+    );
+  }
+  return [];
+}
+
+function getTodosOfProject(projID) {
+  return todoList.filter((todo) => {
+    if (todo.getAssignedProject() === projID) return todo;
+  });
+}
+
+const compareArrays = (a, b) => {
+  return a.toString() === b.toString();
+};
 
 function findProjectByID(projId) {
   for (let p of projectList) {
@@ -32,8 +118,14 @@ function closeModal(modal) {
   modal.remove();
 }
 
-function addProjectToProjectList(projName) {
-  projectList.push(createProject(projName));
+function addProjectToProjectList(project) {
+  projectList.push(project);
+  saveProjectsToLocalStorage(projectList);
+}
+
+function addTodoToTodoList(todo) {
+  todoList.push(todo);
+  saveTodosToLocalStorage(todoList);
 }
 
 function isDisplayedInProjectDetails(projDetails, projObj) {
@@ -73,9 +165,13 @@ function setupProjectModal(defaultProject = null) {
     if (defaultProject) {
       defaultProject.setName(nameInput.value);
       if (isDisplayedInProjectDetails(projectDetailsContainer, defaultProject))
-        updateProjectDetails(projectDetailsContainer, defaultProject);
+        updateProjectDetails(
+          projectDetailsContainer,
+          defaultProject,
+          getTodosOfProject(defaultProject.getID())
+        );
     } else {
-      addProjectToProjectList(nameInput.value);
+      addProjectToProjectList(createProject(nameInput.value));
     }
     updateProjectList(projectListContainer, projectList);
     closeModal(newProjModal);
@@ -87,7 +183,11 @@ function projectListClickHandler(e) {
   if (e.target.id === "new-project-btn") {
     setupProjectModal();
   } else if (project) {
-    updateProjectDetails(projectDetailsContainer, project);
+    updateProjectDetails(
+      projectDetailsContainer,
+      project,
+      getTodosOfProject(project.getID())
+    );
     drawAddTodo(projectDetailsContainer);
   } else if (e.target.classList.contains("edit-btn")) {
     let project = findProjectByID(e.target.closest(".project-item").dataset.id);
@@ -125,11 +225,17 @@ function setupTodoForm(container, addTodoBtn) {
         todo.setPriority(priority.value);
       }
 
-      project.addTodo(todo);
+      // project.addTodo(todo);
+      todo.setAssignedProject(project.getID());
+      addTodoToTodoList(todo);
     } catch (error) {
       console.error(error);
     }
-    updateProjectDetails(container, project);
+    updateProjectDetails(
+      container,
+      project,
+      getTodosOfProject(project.getID())
+    );
     drawAddTodo(container);
     formContainer.remove();
   });
@@ -172,7 +278,11 @@ function editTodo(projContainer, projObj, todoEl, todoToEdit, editBtn) {
     } catch (error) {
       console.error(error);
     }
-    updateProjectDetails(projContainer, projObj);
+    updateProjectDetails(
+      projContainer,
+      projObj,
+      getTodosOfProject(projObj.getID())
+    );
     drawAddTodo(projContainer);
   });
 
@@ -192,7 +302,11 @@ function projectDetailsClickHandler(e) {
     const todoElID = e.target.closest(".todo-container").dataset.id;
     const todoObj = findTodoByID(projectObj, todoElID);
     todoObj.setToComplete();
-    updateProjectDetails(projectEl, projectObj);
+    updateProjectDetails(
+      projectEl,
+      projectObj,
+      getTodosOfProject(projectObj.getID())
+    );
     drawAddTodo(projectEl);
   } else if (e.target.classList.contains("edit-btn")) {
     const projectObj = findProjectByID(projectEl.dataset.projID);
@@ -210,27 +324,43 @@ function createDefaultProject() {
   let month = moment().month(); // jan=0, dec=11
   let year = moment().year();
 
-  defaultProject.addTodo(
-    createTodo(
-      "Get familiar with the app",
-      "Explore the app and see what it has to offer, start adding todos",
-      `${year}-${month}-${date}`
-    )
+  let defaultTodo = createTodo(
+    "Get familiar with the app",
+    "Explore the app and see what it has to offer, start adding todos",
+    `${year}-${month}-${date}`
   );
 
-  defaultProject.getTodoList()[0].setDueTime(14, 15);
-  defaultProject.getTodoList()[0].setPriority("medium");
+  defaultTodo.setDueTime(14, 15);
+  defaultTodo.setPriority("medium");
+  defaultTodo.setAssignedProject(defaultProject.getID());
 
   projectList.push(defaultProject);
+  todoList.push(defaultTodo);
+  console.log(projectList);
+  saveProjectsToLocalStorage(projectList);
+  saveTodosToLocalStorage(todoList);
 }
 
 export const screenController = (function () {
   const projectListContainer = document.querySelector("#project-list");
   const projectDetailsContainer = document.querySelector("#project-details");
 
-  createDefaultProject();
+  if (
+    getFromLocalStorage("projects") === null &&
+    getFromLocalStorage("todos") === null
+  ) {
+    createDefaultProject();
+  } else {
+    projectList = getProjectsFromLocalStorage();
+    todoList = getTodosFromLocalStorage();
+  }
+
   updateProjectList(projectListContainer, projectList);
-  updateProjectDetails(projectDetailsContainer, projectList[0]);
+  updateProjectDetails(
+    projectDetailsContainer,
+    projectList[0],
+    getTodosOfProject(projectList[0].getID())
+  );
   drawAddTodo(projectDetailsContainer);
 
   projectListContainer.addEventListener("click", projectListClickHandler);
@@ -239,5 +369,4 @@ export const screenController = (function () {
 })();
 
 // TODO:
-// Add UI to allow user to edit name of project on the details page. Event listener should update nav and project details
 // Add logic to write data to localStorage

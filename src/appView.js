@@ -98,14 +98,14 @@ function drawEditTodo(container) {
   container.appendChild(editTodoBtn);
 }
 
-export function updateProjectDetails(container, project) {
+export function updateProjectDetails(container, project, todos) {
   clearContainer(container);
   container.dataset.projID = project.getID();
   const projName = document.createElement("h1");
   projName.textContent = project.getProjectName();
   container.appendChild(projName);
 
-  for (let todo of project.getTodoList()) {
+  for (let todo of todos) {
     if (todo.getComplete()) continue;
 
     const todoContainer = document.createElement("div");

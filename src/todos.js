@@ -80,11 +80,12 @@ function createTodo(
   dueDate = null,
   dueTime = null,
   priority = null,
-  notes = null
+  assignedProject = null,
+  completeStatus = null,
+  id = null
 ) {
-  let tags = [];
-  let complete = false;
-  const ID = uuidv4();
+  let complete = completeStatus ? completeStatus : false;
+  const ID = id ? id : uuidv4();
 
   const getTitle = () => title;
   const getDescription = () => description;
@@ -93,10 +94,9 @@ function createTodo(
   const getDueTime = () => dueTime;
   const getSemanticDueTime = () => format(dueTime, "p");
   const getPriority = () => priorityToString(priority);
-  const getNotes = () => notes;
-  const getTags = () => tags;
   const getComplete = () => complete;
   const getID = () => ID;
+  const getAssignedProject = () => assignedProject;
 
   const getTodoDetails = () => {
     return {
@@ -129,16 +129,21 @@ function createTodo(
     else if (isNumber(priorityLvl) || isString(priorityLvl))
       priority = toPriorityLvl(priorityLvl);
   };
-  const setNotes = (newNotes) => (notes = newNotes);
-  const addTag = (tag) => {
-    // Cannot have duplicate tags
-    if (!tags.includes(tag)) tags.push(tag);
-  };
-  const removeTag = (tag) => {
-    let index = tags.indexOf(tag);
-    if (index) tags.splice(index, 1);
-  };
   const setToComplete = () => (complete = true);
+  const setAssignedProject = (projectID) => (assignedProject = projectID);
+
+  function toJSON() {
+    return {
+      ID: getID(),
+      title: getTitle(),
+      description: getDescription(),
+      dueDate: getDueDate(),
+      dueTime: getDueTime(),
+      priority: getPriority(),
+      complete: getComplete(),
+      assignedProject: getAssignedProject(),
+    };
+  }
 
   return {
     getTitle,
@@ -148,10 +153,9 @@ function createTodo(
     getDueTime,
     getSemanticDueTime,
     getPriority,
-    getNotes,
-    getTags,
     getComplete,
     getID,
+    getAssignedProject,
     setTitle,
     setDescription,
     setDueDate,
@@ -159,11 +163,10 @@ function createTodo(
     setDueTime,
     clearDueTime,
     setPriority,
-    setNotes,
-    addTag,
-    removeTag,
     setToComplete,
+    setAssignedProject,
     getTodoDetails,
+    toJSON,
   };
 }
 
